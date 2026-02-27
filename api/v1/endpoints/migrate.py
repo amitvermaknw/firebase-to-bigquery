@@ -1,0 +1,27 @@
+from fastapi import APIRouter, HTTPException
+from services.firebase_service import fetch_articles
+from services.bigquery_service import insert_articles
+
+router = APIRouter()
+
+@router.post("/migrate")
+async def migrate_articles(collection: str = "articles"):
+    try:
+        articles = fetch_articles(collection)
+        if not articles:
+            raise HTTPException(status_code=404, detail="No articles found in firebase")
+        
+        result =  insert_articles(articles)
+
+        return {
+            "msg": "Migration compelted",
+            "total_fetched": len(articles)
+            ** result
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@router.get("preview")
+async def preview_articles(collection: str = "articles", limit: int = 5):
+    articles = fetch_articles(collection)
+    return { "code": 200, "articles": articles[:limit], "total": len(articles)}
