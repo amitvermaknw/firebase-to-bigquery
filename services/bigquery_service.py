@@ -65,7 +65,7 @@ def insert_articles(articles: list[dict]) -> dict:
     # errors = client.insert_rows_json(table_id, flattened)
 
     # ✅ Flatten + embed each article
-    flattened = [flatten_article(a) for a in [articles]]
+    flattened = [flatten_article(a) for a in articles]
 
     json_data = "\n".join([json.dumps(a) for a in flattened])
     data_file = StringIO(json_data)

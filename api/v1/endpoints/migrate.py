@@ -15,14 +15,12 @@ async def migrate_articles(request: MigrateRequest):
         if not articles:
             raise HTTPException(status_code=404, detail="No articles found in firebase")
         
-
-        
-        result =  insert_articles(articles[0])
+        result =  insert_articles(articles[10:15])
 
         return {
             "msg": "Migration compelted",
-            "total_fetched": len(articles)
-            ** result
+            "total_fetched": len(articles),
+            **result
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
