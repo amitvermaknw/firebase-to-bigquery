@@ -216,9 +216,3 @@ Firebase Firestore
        ▼
   Google BigQuery Table
 ```
-
----
-
-## License
-
-MIT License © 2026
