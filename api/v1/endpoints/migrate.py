@@ -1,17 +1,23 @@
 from fastapi import APIRouter, HTTPException
 from services.firebase_service import fetch_articles
 from services.bigquery_service import insert_articles
+from pydantic import BaseModel
 
 router = APIRouter()
 
+class MigrateRequest(BaseModel):
+    collection: str = "articles"
+
 @router.post("/migrate")
-async def migrate_articles(collection: str = "articles"):
+async def migrate_articles(request: MigrateRequest):
     try:
-        articles = fetch_articles(collection)
+        articles = fetch_articles(request.collection)
         if not articles:
             raise HTTPException(status_code=404, detail="No articles found in firebase")
         
-        result =  insert_articles(articles)
+
+        
+        result =  insert_articles(articles[0])
 
         return {
             "msg": "Migration compelted",

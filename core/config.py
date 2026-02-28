@@ -9,6 +9,7 @@ class Setting(BaseSettings):
     bigquery_project_id: str
     bigquery_dataset: str
     bigquery_table: str
+    location: str
 
     model_config = {
         "env_file": str(ROOT_DIR / ".env"),  # explicit absolute path
